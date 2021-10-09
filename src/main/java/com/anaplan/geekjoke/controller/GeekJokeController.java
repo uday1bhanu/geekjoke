@@ -8,12 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class GeekJokeController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private static List<String> geekJokes;
+    private static Map<String, String> env;
 
     static {
         geekJokes = new ArrayList<String>() {{
@@ -27,6 +29,7 @@ public class GeekJokeController {
             add("REAL MEN DON’T USE BACKUPS, THEY POST THEIR STUFF ON A PUBLIC FTP SERVER AND LET THE REST OF THE WORLD MAKE COPIES");
             add("BUGS COME IN THROUGH OPEN WINDOWS");
         }};
+        env = System.getenv();
     }
     /**
      * Get geekjoke
@@ -35,7 +38,11 @@ public class GeekJokeController {
      */
     @RequestMapping(value = "/geekjoke", method = RequestMethod.GET)
     public String geekjoke(){
-        String geekJoke = geekJokes.get((int)(Math.random()*(geekJokes.size())));
+        Map<String, String> env = System.getenv();
+        String dataCenter = env.get("DC_NAME");
+        String cluster = env.get("CLUSTER_NAME");
+        String verion = env.get("VERSION");
+        String geekJoke = dataCenter + "-" + cluster + "-"+verion + "-"+geekJokes.get((int)(Math.random()*(geekJokes.size())));
         logger.info(geekJoke);
         return geekJoke;
     }

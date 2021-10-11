@@ -38,7 +38,6 @@ public class GeekJokeController {
      */
     @RequestMapping(value = "/geekjoke", method = RequestMethod.GET)
     public String geekjoke(){
-        Map<String, String> env = System.getenv();
         String dataCenter = env.get("DC_NAME");
         String cluster = env.get("CLUSTER_NAME");
         String verion = env.get("VERSION");
